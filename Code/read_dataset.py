@@ -25,9 +25,3 @@ def refine_dataset(X):
                 X[j, i] = avg
         X[:, i] = X[:, i] / X[:, i].max()
     print("done refining dataset")
-
-features, X, y, ids = read_dataset('train.csv')
-rand_indices = np.random.randint(X.shape[0], size=80000)
-X = X[rand_indices, :]
-print(" size : {}".format(X.shape[0]))
-refine_dataset(X)
