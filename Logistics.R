@@ -50,6 +50,9 @@ for (i in 2:ncol(test)) {
 a = which((test$ps_car_11_cat==25)|(test$ps_car_11_cat==80))
 test$ps_car_11_cat[a] = 1
 
+# Convert test$id to integer
+test$id = as.integer(test$id)
+
 #Data preprocessing completed.
 
 # Learning by simple logistic regression
