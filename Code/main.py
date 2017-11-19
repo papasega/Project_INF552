@@ -12,23 +12,25 @@ from predict_proba import predict_proba
 import csv
 
 features, X, y, ids = read_dataset("train.csv")
-
+refine_dataset(X)
 # randomly select 60000 samples from original dataset
-indices = np.random.randint(X.shape[0], size=80000)
-X_ = X[indices,:]
-refine_dataset(X_)
-y_ = y[indices]
-X_training = X_[:60000, :]
-y_training = y_[:60000]
-X_test = X_[60000:, :]
-y_test = y_[60000:]
+indices = np.random.randint(X.shape[0], size=200000)
+X_training = X[indices,:]
+y_training = y[indices]
+#X_training = X_[:60000, :]
+#y_training = y_[:60000]
+X_test = X[np.where(y == 1)[0], :]
+print("shape X_test : {}".format(X_test.shape[0]))
+#X_test = X_[60000:, :]
+#y_test = y_[60000:]
 
 input_layer_side = len(features)
-nb_labels = 2
-hidden_layer_size = 15
+nb_labels = 1
+hidden_layer_size_0 = 15
+hidden_layer_size_1 = 40
 
 # initialize neural network
-layers = [input_layer_side, hidden_layer_size, nb_labels]
+layers = [input_layer_side, hidden_layer_size_0, nb_labels]
 
 Theta = randInitializeWeights(layers)
 
@@ -47,7 +49,7 @@ Theta = roll_params(res[0], layers)
 print("\nTesting Neural Network... \n")
 
 pred  = predict(Theta, X_test)
-print('\nAccuracy: ' + str(np.mean(y_test==pred) * 100))
+print('\nAccuracy: ' + str(np.mean(pred == 1) * 100))
 
 
 features, test_samples, id_list = read_dataset('test.csv', train=0)

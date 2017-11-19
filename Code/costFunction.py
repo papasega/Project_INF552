@@ -33,10 +33,11 @@ def costFunction(nn_weights, layers, X, y, num_labels, lambd):
     # containing values from 1..K. You need to map this vector into a
     # binary vector of 1's and 0's to be used with the neural network
     # cost function.
-    yv = np.zeros((m,num_labels))
-    #for k in range(m): (SLOW)
-        #yv[k,y[k]]=1
-    yv[(np.arange(m),y)]=1
+    yv = np.zeros((m, num_labels))
+    if  num_labels == 1:
+        yv[np.where(y == 1), 0] = 1
+    else:
+        yv[(np.arange(m),y)]=1
 
 
     # ================================ TODO ================================
@@ -54,11 +55,6 @@ def costFunction(nn_weights, layers, X, y, num_labels, lambd):
         R = R + np.sum(essen*essen)
 
     return J/m + lambd*R/(2*m)
-"""
-def toRight(a,w,sigmoid): #this function is no longer necessary
-    z = w[:,1:].dot(a)+w[:,0]
-    o = sigmoid(z)
-    return o
-"""
+
 def jo(y,r):
     return np.sum(-y*np.log(r)-(1-y)*np.log(1-r))

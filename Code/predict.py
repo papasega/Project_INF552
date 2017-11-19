@@ -19,7 +19,7 @@ def predict(Theta, X):
         for l in range(num_layers-1):
             a = toRight(a,Theta[l],sigmoid) #to move from activation l to activation n+1
         assert(a.shape[0]==num_labels)
-        p[0,i] = argmax(a)
+        p[0,i] = 1 if a > 0.5 else 0
     return p
 
 def toRight(a,w,sigmoid):

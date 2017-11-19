@@ -20,8 +20,6 @@ def refine_dataset(X):
     nb_features = X.shape[1]
     for i in range(nb_features):
         avg = X[:, i].dot(X[:, i] != -1) / (X[:, i] != -1).sum()
-        for j in range(m):
-            if X[j, i] == -1:
-                X[j, i] = avg
+        X[np.where(X[:, i] == 1), i] = avg
         X[:, i] = X[:, i] / X[:, i].max()
     print("done refining dataset")

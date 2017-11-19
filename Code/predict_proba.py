@@ -11,8 +11,8 @@ def predict_proba(Theta, X):
         a = X[i, :]  # a stands for "activation"
         for l in range(num_layers - 1):
             a = toRight(a, Theta[l], sigmoid)  # to move from activation l to activation n+1
-        assert (a.shape[0] == 2)
-        p[i] = a.max() / a.sum()
+        assert (a.shape[0] == 1)
+        p[i] = a
     return p
 
 

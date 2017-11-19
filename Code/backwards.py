@@ -35,8 +35,11 @@ def backwards(nn_weights, layers, X, y, num_labels, lambd):
     # containing values from 1..K. You need to map this vector into a
     # binary vector of 1's and 0's to be used with the neural network
     # cost function.
-    yv = zeros((m,num_labels))
-    yv[(arange(m),y)]=1
+    yv = zeros((m, num_labels))
+    if num_labels == 1:
+        yv[where(y == 1), 0] = 1
+    else:
+        yv[(arange(m), y)] = 1
 
     # ================================ TODO ================================
     # In this point implement the backpropagaition algorithm
