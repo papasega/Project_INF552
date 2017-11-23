@@ -46,7 +46,7 @@ def test_submission(filename):
     assert(pred.shape[0]==m)
 
     print('\noutput to .csv file ...\n')
-    df = pd.DataFrame({"id": ids, "target": pred[:,0]})
+    df = pd.DataFrame({"id": ids, "target": pred[:,1]})
     df.to_csv("../TENSORFLOW/submission.csv", index=False)
     print('\nDone!\n')
 
