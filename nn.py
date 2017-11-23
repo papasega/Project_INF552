@@ -11,10 +11,7 @@ n_classes = 2
 batch_size = 100
 
 def neural_network_model(data, m, n, lambd):
-
-
-    print('nb of features : {}'.format(n))
-
+    #define hidden layers and output layer
     hidden_1_layer = {'weights': tf.Variable(tf.random_normal([n, n_nodes_hl1])),
                       'biases': tf.Variable(tf.random_normal([n_nodes_hl1]))}
 
@@ -75,19 +72,24 @@ def train_neural_network(X_train, X_test, y_train, y_test, lambd=3.0, nb_iter=10
         # nb of features (categories)
         n = X_train.shape[1]
 
-        prediction, regularizer = neural_network_model(x, m, n, lambd)
+        pred, regularizer = neural_network_model(x, m, n, lambd)
 
         # define cost function
-        loss = tf.nn.softmax_cross_entropy_with_logits(logits=prediction, labels=y)
-        cost = tf.reduce_mean(loss + regularizer)
+        cost = tf.nn.softmax_cross_entropy_with_logits(logits=pred, labels=y)
+        cost = tf.reduce_mean(cost + regularizer)
+
+        # define optimizer
         optimizer = tf.train.AdamOptimizer().minimize(cost)
 
+        # define proba getter
+        probs = tf.nn.softmax(logits=pred, name='probs')
+
         # define predict accuracy operator
-        predict_op = tf.argmax(prediction, 1, name='predict_op')
+        predict_op = tf.argmax(pred, 1, name='predict_op')
         correct = tf.equal(predict_op, tf.argmax(y, 1))
         accuracy = tf.reduce_mean(tf.cast(correct, 'float'), name='accuracy')
 
-        # define nb of iterations
+        # fix nb of iterations
         hm_epochs = nb_iter
 
         saver = tf.train.Saver()
@@ -95,7 +97,7 @@ def train_neural_network(X_train, X_test, y_train, y_test, lambd=3.0, nb_iter=10
         # training neural network
         print('\nStart training neural network ... \n')
         sess.run(tf.global_variables_initializer())
-
+        step = 0
         for epoch in range(hm_epochs):
             epoch_loss = 0
             i = 0
@@ -109,13 +111,14 @@ def train_neural_network(X_train, X_test, y_train, y_test, lambd=3.0, nb_iter=10
                                                               y: batch_y})
                 epoch_loss += c
                 i += batch_size
+                step += 1
 
             print('Epoch', epoch, 'completed out of', hm_epochs, 'loss:', epoch_loss)
 
         print('Accuracy:', accuracy.eval({x: X_test, y: y_test}))
 
         # save trained network
-        saver.save(sess, '../TENSORFLOW/my_model')
+        saver.save(sess, '../TENSORFLOW/my_model', global_step=step)
 
 
 X_train, X_test, y_train, y_test = read_data('train.csv')
