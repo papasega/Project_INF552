@@ -123,6 +123,6 @@ def train_neural_network(X_train, X_test, y_train, y_test, lambd=3.0, nb_iter=10
 
 X_train, X_test, y_train, y_test = read_data('train.csv')
 
-train_neural_network(X_train, X_test, y_train, y_test)
+train_neural_network(X_train, X_test, y_train, y_test,nb_iter=300)
 
 

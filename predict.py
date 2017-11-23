@@ -6,7 +6,7 @@ from read_data import read_data
 def predict(X_, y_):
     with tf.Session() as sess:
         # restore session variables and operators from file
-        saver = tf.train.import_meta_graph('my_model-47620.meta')
+        saver = tf.train.import_meta_graph('my_model-1428600.meta')
         saver.restore(sess, tf.train.latest_checkpoint('./'))
         graph = tf.get_default_graph()
 

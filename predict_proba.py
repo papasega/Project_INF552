@@ -7,7 +7,7 @@ import math as mt
 def predict_proba(X_):
     with tf.Session() as sess:
         # restore session variables and operators from file
-        saver = tf.train.import_meta_graph('my_model-47620.meta')
+        saver = tf.train.import_meta_graph('my_model-1428600.meta')
         saver.restore(sess, tf.train.latest_checkpoint('./'))
         graph = tf.get_default_graph()
 
@@ -43,11 +43,10 @@ def test_submission(filename):
     print('row 0 : {}'.format(pred[0]))
     print('row 1 : {}'.format(pred[1]))
     print('shape pred : {}'.format(np.shape(pred)))
-    res = np.amax(np.array(pred), axis=1)
-    assert(res.shape[0]==m)
+    assert(pred.shape[0]==m)
 
     print('\noutput to .csv file ...\n')
-    df = pd.DataFrame({"id": ids, "target": res})
+    df = pd.DataFrame({"id": ids, "target": pred[:,0]})
     df.to_csv("../TENSORFLOW/submission.csv", index=False)
     print('\nDone!\n')
 
