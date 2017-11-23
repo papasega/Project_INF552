@@ -6,7 +6,7 @@ from read_data import read_data
 def predict(X_, y_):
     with tf.Session() as sess:
         # restore session variables and operators from file
-        saver = tf.train.import_meta_graph('my_model-1428600.meta')
+        saver = tf.train.import_meta_graph('my_model-238100.meta')
         saver.restore(sess, tf.train.latest_checkpoint('./'))
         graph = tf.get_default_graph()
 
@@ -19,7 +19,7 @@ def predict(X_, y_):
         predict_op = graph.get_tensor_by_name('predict_op:0')
 
         accuracy = graph.get_tensor_by_name('accuracy:0')
-        probs = graph.get_tensor_by_name('probs:0')
+        probs = graph.get_tensor_by_name('pred:0')
         p = sess.run(accuracy,feed_dict)
         pred = sess.run(probs,feed_dict={x:X_})
         res = sess.run(predict_op, feed_dict={x:X_})
